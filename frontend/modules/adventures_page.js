@@ -5,6 +5,9 @@ import config from "../conf/index.js";
 function getCityFromURL(search) {
   // TODO: MODULE_ADVENTURES
   // 1. Extract the city id from the URL's Query Param and return it
+  const x = search.indexOf("=");
+  const y = search.length;
+  return search.substring(x+1,y);
 
 }
 
@@ -12,6 +15,15 @@ function getCityFromURL(search) {
 async function fetchAdventures(city) {
   // TODO: MODULE_ADVENTURES
   // 1. Fetch adventures using the Backend API and return the data
+  try{
+  const response =await fetch(config.backendEndpoint+ `/adventures?city=${city}`);
+  const json = await response.json();
+  return json;
+  }
+  catch(error)
+  {
+    return null;
+  }
 
 }
 
@@ -19,6 +31,62 @@ async function fetchAdventures(city) {
 function addAdventureToDOM(adventures) {
   // TODO: MODULE_ADVENTURES
   // 1. Populate the Adventure Cards and insert those details into the DOM
+  for(let i=0;i<adventures.length;++i)
+  {
+    const container = document.querySelector("#data");
+
+    const cardContainer = document.createElement("div");
+    cardContainer.className="col-12 col-sm-6 col-lg-3 mt-2";
+    const card = document.createElement("div");
+    card.className="card";
+    const link = document.createElement("a");
+    link.setAttribute("href",`detail/?adventure=${adventures[i].id}`);
+    link.setAttribute("id",adventures[i].id);
+    const img = document.createElement("img");
+    img.setAttribute("src",adventures[i].image);
+    img.className="activity-card-image";
+    
+    const text = document.createElement("div");
+    text.className="d-flex flex-column";
+    const textContainer1 = document.createElement("div");
+    textContainer1.className="d-flex justify-content-between pb-2 pt-1";
+    const textContainer1_text1 = document.createElement("div");
+    textContainer1_text1.style.paddingLeft="15px";
+    textContainer1_text1.textContent=adventures[i].name;
+    const textContainer1_text2 = document.createElement("div");
+    textContainer1_text2.style.paddingRight="15px"
+    textContainer1_text2.innerHTML='&#8377;'+adventures[i].costPerHead;
+    textContainer1.append(textContainer1_text1);
+    textContainer1.append(textContainer1_text2);
+
+    const textContainer2 = document.createElement("div");
+    textContainer2.className="d-flex justify-content-between pb-2";
+    const textContainer2_text1 = document.createElement("div");
+    textContainer2_text1.style.paddingLeft="15px";
+    textContainer2_text1.textContent="Duration";
+    const textContainer2_text2 = document.createElement("div");
+    textContainer2_text2.style.paddingRight="15px"
+    textContainer2_text2.textContent=adventures[i].duration+" HOURS";
+    textContainer2.append(textContainer2_text1);
+    textContainer2.append(textContainer2_text2);
+
+    text.append(textContainer1);
+    text.append(textContainer2);
+
+    const banner = document.createElement("div");
+    banner.className="category-banner";
+    banner.textContent=adventures[i].category;
+    
+    link.append(img);
+    card.append(banner);
+    card.append(link);
+    card.append(text);
+    cardContainer.append(card);
+
+
+    container.append(cardContainer);
+
+  }
 
 }
 
