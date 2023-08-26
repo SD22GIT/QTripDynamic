@@ -101,7 +101,11 @@ function filterByDuration(list, low, high) {
 function filterByCategory(list, categoryList) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on their Category and return filtered list
+  let filteredAdventures = list.filter((element,index)=>{
+    return categoryList.includes(element.category);
+  });
 
+  return filteredAdventures;
 }
 
 // filters object looks like this filters = { duration: "", category: [] };
@@ -115,7 +119,13 @@ function filterFunction(list, filters) {
   // TODO: MODULE_FILTERS
   // 1. Handle the 3 cases detailed in the comments above and return the filtered list of adventures
   // 2. Depending on which filters are needed, invoke the filterByDuration() and/or filterByCategory() methods
+  console.log('filter func');
+  let categoryList = filters.category;
 
+  if(categoryList.length>0)
+  {
+    filterByCategory(list,categoryList);
+  }
 
   // Place holder for functionality to work in the Stubs
   return list;
